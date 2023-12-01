@@ -1,0 +1,17 @@
+do_eval: false
+evaluation_strategy: 'no'
+fp16: true
+gradient_accumulation_steps: 4
+learning_rate: 0.005
+load_best_model_at_end: false
+logging_steps: 10
+metric_for_best_model: accuracy
+num_train_epochs: 40
+output_dir: futurama-lora-blip
+per_device_eval_batch_size: 8
+per_device_train_batch_size: 8
+push_to_hub: false
+remove_unused_columns: false
+report_to: "none"
+save_safetensors: true
+save_strategy: epoch
