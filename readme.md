@@ -37,7 +37,7 @@ There's also a utility to show some results of caption models to compare them. Y
 usage: caption_plot.py [-h] --images_path IMAGES_PATH
                        [--model_names MODEL_NAMES [MODEL_NAMES ...]]
 
-Plot captions for images different models
+Plot captions for images with different models
 
 optional arguments:
   -h, --help            show this help message and exit

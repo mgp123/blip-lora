@@ -82,7 +82,7 @@ def main(images_path, model_names):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        description="Plot captions for images different models"
+        description="Plot captions for images with different models"
     )
     parser.add_argument(
         "--images_path",
