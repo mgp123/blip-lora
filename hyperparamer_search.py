@@ -1,10 +1,15 @@
 import argparse
 
 import yaml
+from ray import tune
 from torch.utils.data import random_split
 from transformers import BlipProcessor, TrainingArguments
 
 from utils import CaptionTrainer, ImageCaptioningDataset, get_lora_model
+
+
+def ray_hp_space(trial):
+    return {"r": tune.randint(1, 18)}
 
 
 def train(
@@ -21,16 +26,23 @@ def train(
 
     training_args = TrainingArguments(**train_config)
 
-    lora_model = get_lora_model(model_name, r=3)
+    def model_init(hyp):
+        print(hyp, "\n\n")
+        r = hyp.params["r"] if hyp is not None else 16
+        return get_lora_model(model_name, r=r)
+
     trainer = CaptionTrainer(
-        lora_model,
-        training_args,
+        model=None,
+        args=training_args,
         train_dataset=dataset_train,
-        eval_dataset=dataset_test,  # currently not used
+        eval_dataset=dataset_test,
         data_collator=None,
+        model_init=model_init,
     )
 
-    trainer.train()
+    trainer.hyperparameter_search(
+        direction="minimize", hp_space=ray_hp_space, backend="ray", n_trials=10
+    )
 
 
 if __name__ == "__main__":
